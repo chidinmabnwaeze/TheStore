@@ -42,10 +42,16 @@ export default function SingleProductPage() {
     fetchProduct();
   }, [id]);
 
-  const updateProduct = async (id: string) => {
+  const updateProduct = async (id: number) => {
     try {
       const response = await fetch(
-        `https://api.escuelajs.co/api/v1/products/${id}`
+        `https://api.escuelajs.co/api/v1/products/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
 
       if (!response.ok) {
@@ -59,7 +65,28 @@ export default function SingleProductPage() {
     }
   };
 
-//   const deleteProduct = async ()=
+  const deleteProduct = async (id: number) => {
+    try {
+      const res = await fetch(
+        `https://api.escuelajs.co/api/v1/products/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!res.ok) {
+        console.log("error deleting product");
+        throw new Error("Couldnt delete product");
+      }
+
+      const data = await res.json();
+      setProduct(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (!product) return <p>Product not found</p>;
