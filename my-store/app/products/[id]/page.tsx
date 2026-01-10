@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface ProductProps {
   id: number;
@@ -14,6 +15,7 @@ interface ProductProps {
 
 export default function SingleProductPage() {
   const { id } = useParams();
+  const router = useRouter();
   const [product, setProduct] = useState<ProductProps | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -42,18 +44,18 @@ export default function SingleProductPage() {
     fetchProduct();
   }, [id]);
 
-  const updateProduct = async (id: number) => {
+  const updateProduct = async () => {
     try {
       const response = await fetch(
-        `https://api.escuelajs.co/api/v1/products/${id}`,
+        `https://api.escuelajs.co/api/v1/products/${product?.id}`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            title: product?.title + "Updated"
-          })
+            title: product?.title + "Updated",
+          }),
         }
       );
 
@@ -62,44 +64,40 @@ export default function SingleProductPage() {
       }
 
       const data = await response.json();
-      setProduct(data)
-    } catch (error) {
-      console.error(error);
-    }
-    updateProduct(id);
-  };
-
-  const handleDelete = async (id: number) => {
-    try {
-      const res = await fetch(
-        `https://api.escuelajs.co/api/v1/products/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (!res.ok) {
-        console.log("error deleting product");
-        throw new Error("Couldnt delete product");
-      }
-
-      const data = await res.json();
       setProduct(data);
     } catch (error) {
       console.error(error);
     }
-    handleDelete(id)
   };
 
-  if (loading) return <p>Loading...</p>;
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(
+        `https://api.escuelajs.co/api/v1/products/${product?.id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!res.ok) {
+        console.log("error deleting product");
+        throw new Error("Couldn't delete product");
+      } else {
+        console.log("product deleted successfully");
+        router.push("/products");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (loading) return <p className="h-screen m-auto">Loading...</p>;
   if (!product) return <p>Product not found</p>;
 
   return (
     <main className="flex justify-between items-center p-10">
       <section>
         <img src={product.images[0]} alt={product.title} className="" />
+        <button className="text-blue-500 mt-4" onClick={updateProduct}>Edit Product</button>
       </section>
 
       <section className="ml-15">
@@ -110,7 +108,10 @@ export default function SingleProductPage() {
           <button className="bg-blue-700 p-4 w-full text-white rounded mr-3">
             Buy Now
           </button>
-          <button className="bg-red-700 p-4 w-full text-white rounded mr-3" onClick={handleDelete}>
+          <button
+            className="bg-red-700 p-4 w-full text-white rounded mr-3"
+            onClick={handleDelete}
+          >
             Delete Product
           </button>
         </div>
