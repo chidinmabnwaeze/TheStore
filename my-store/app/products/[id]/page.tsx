@@ -51,6 +51,9 @@ export default function SingleProductPage() {
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            title: product?.title + "Updated"
+          })
         }
       );
 
@@ -59,13 +62,14 @@ export default function SingleProductPage() {
       }
 
       const data = await response.json();
-      // set
+      setProduct(data)
     } catch (error) {
       console.error(error);
     }
+    updateProduct(id);
   };
 
-  const deleteProduct = async (id: number) => {
+  const handleDelete = async (id: number) => {
     try {
       const res = await fetch(
         `https://api.escuelajs.co/api/v1/products/${id}`,
@@ -86,6 +90,7 @@ export default function SingleProductPage() {
     } catch (error) {
       console.error(error);
     }
+    handleDelete(id)
   };
 
   if (loading) return <p>Loading...</p>;
@@ -105,7 +110,7 @@ export default function SingleProductPage() {
           <button className="bg-blue-700 p-4 w-full text-white rounded mr-3">
             Buy Now
           </button>
-          <button className="bg-red-700 p-4 w-full text-white rounded mr-3">
+          <button className="bg-red-700 p-4 w-full text-white rounded mr-3" onClick={handleDelete}>
             Delete Product
           </button>
         </div>
