@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import EditProduct from "@/app/products/[id]/edit/page";
 
 interface ProductProps {
   id: number;
@@ -19,32 +20,30 @@ export default function SingleProductPage() {
   const [product, setProduct] = useState<ProductProps | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchProduct = async () => {
+    try {
+      const res = await fetch(`https://api.escuelajs.co/api/v1/products/${id}`);
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch product");
+      }
+
+      const data = await res.json();
+      setProduct(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!id) return;
-
-    const fetchProduct = async () => {
-      try {
-        const res = await fetch(
-          `https://api.escuelajs.co/api/v1/products/${id}`
-        );
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch product");
-        }
-
-        const data = await res.json();
-        setProduct(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProduct();
   }, [id]);
 
-  const updateProduct = async () => {
+  const updateProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       const response = await fetch(
         `https://api.escuelajs.co/api/v1/products/${product?.id}`,
@@ -97,7 +96,9 @@ export default function SingleProductPage() {
     <main className="flex justify-between items-center p-10">
       <section>
         <img src={product.images[0]} alt={product.title} className="" />
-        <button className="text-blue-500 mt-4" onClick={updateProduct}>Edit Product</button>
+        <button className="text-blue-500 mt-4" onClick={()=>router.push(`/products/${product.id}/edit/`)}>
+          Edit Product
+        </button>
       </section>
 
       <section className="ml-15">
