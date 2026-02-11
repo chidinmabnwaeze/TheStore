@@ -46,6 +46,7 @@ export default async function ProductsPage() {
                 className="w-full h-48 object-cover mb-4"
               />
               <h2 className="text-lg font-semibold mb-2">{product.title}</h2>
+              
               <p className="text-gray-700 mb-2">${product.price}</p>
               {/* <p className="text-gray-600">{product.description}</p> */}
               <button className="bg-blue-500 text-white px-4 py-2 rounded">

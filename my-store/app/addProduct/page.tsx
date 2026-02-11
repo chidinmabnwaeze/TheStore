@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface addProductProps {
   title: string;
@@ -18,6 +20,8 @@ export default function AddProductPage() {
     images: [""],
   });
 
+  const router = useRouter();
+
   const handleAddProduct = async () => {
     try {
       const response = await fetch("https://api.escuelajs.co/api/v1/products", {
@@ -34,21 +38,28 @@ export default function AddProductPage() {
         }),
       });
 
+      
       if (!response.ok) {
+        const error = await response.json();
+        toast.error("Error adding product");
+        console.log(error);
         throw new Error("Failed to add product");
       }
-
+        
+      
       const data = await response.json();
+      toast.success("Product added successfully");
+      router.push("/products");
       console.log("Product added successfully", data);
     } catch (error) {
       console.error("Error adding product", error);
-      alert("Error adding product");
     }
   };
 
   return (
     <main className="p-4">
       <h1 className="text-2xl font-bold mb-4">Add New Product</h1>
+      <ToastContainer />
       <form
         className="space-y-4"
         onSubmit={(e) => {
@@ -62,34 +73,44 @@ export default function AddProductPage() {
             type="text"
             className="w-full border px-3 py-2 rounded"
             value={formdata.title}
-            onChange={(e) => setFormData({ ...formdata, title: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formdata, title: e.target.value })
+            }
           />
           <label className="block mb-1 font-semibold">Price</label>
           <input
             type="number"
             className="w-full border px-3 py-2 rounded"
             value={formdata.price}
-            onChange={(e) => setFormData({ ...formdata, price: Number(e.target.value) })}
+            onChange={(e) =>
+              setFormData({ ...formdata, price: Number(e.target.value) })
+            }
           />
           <label className="block mb-1 font-semibold">Description</label>
           <textarea
             className="w-full border px-3 py-2 rounded"
             value={formdata.description}
-            onChange={(e) => setFormData({ ...formdata, description: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formdata, description: e.target.value })
+            }
           />
           <label className="block mb-1 font-semibold">Category ID</label>
           <input
             type="number"
             className="w-full border px-3 py-2 rounded"
             value={formdata.categoryId}
-            onChange={(e) => setFormData({ ...formdata, categoryId: Number(e.target.value) })}
+            onChange={(e) =>
+              setFormData({ ...formdata, categoryId: Number(e.target.value) })
+            }
           />
           <label className="block mb-1 font-semibold">Image</label>
           <input
             type="text"
             className="w-full border px-3 py-2 rounded"
             value={formdata.images[0]}
-            onChange={(e) => setFormData({ ...formdata, images: [e.target.value] })}
+            onChange={(e) =>
+              setFormData({ ...formdata, images: [e.target.value] })
+            }
           />
         </div>
         <div>

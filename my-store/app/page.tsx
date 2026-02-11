@@ -8,7 +8,7 @@ export default function Home() {
       
        <div className="text-6xl flex justify-center items-center">Welcome to The Store</div>
        <Link href="/products">
-       <button className="bg-blue-500  text-white px-4 py-3 mt-6 rounded hover:bg-blue-600">Explore Products</button>
+       <button className="bg-blue-500  text-white px-4 py-3 mt,,,-6 rounded hover:bg-blue-600">Explore Products</button>
        </Link>
       </main>
     </div>
