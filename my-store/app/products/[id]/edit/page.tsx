@@ -149,56 +149,100 @@ export default function EditProductPage() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (!product) return <p>Product not found</p>;
+  if (loading) return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <p className="text-gray-400 text-sm">Loading product...</p>
+    </div>
+  );
+  if (!product) return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <p className="text-gray-500">Product not found.</p>
+    </div>
+  );
 
   return (
-    <form onSubmit={handleUpdate} className="p-10">
-      <label className="block mb-1 font-semibold">Title</label>
-      <input
-        type="text"
-        className="w-full border px-3 py-2 rounded"
-        value={product.title}
-        onChange={(e) => setProduct({ ...product, title: e.target.value })}
-      />
-      <label className="block mb-1 font-semibold">Price</label>
-      <input
-        type="number"
-        className="w-full border px-3 py-2 rounded"
-        value={product.price}
-        onChange={(e) =>
-          setProduct({ ...product, price: Number(e.target.value) })
-        }
-      />
-      <label className="block mb-1 font-semibold">Description</label>
-      <input
-        type="text"
-        className="w-full border px-3 py-2 rounded"
-        value={product.description}
-        onChange={(e) =>
-          setProduct({ ...product, description: e.target.value })
-        }
-      />
-      <label className="block mb-1 font-semibold">Category ID</label>
-      <input
-        type="number"
-        className="w-full border px-3 py-2 rounded"
-        value={product.categoryId}
-        onChange={(e) =>
-          setProduct({ ...product, categoryId: Number(e.target.value) })
-        }
-      />
-      <label className="block mb-1 font-semibold">Images</label>
-      <input
-        type="text"
-        className="w-full border px-3 py-2 rounded"
-        value={product.images[0]}
-        onChange={(e) => setProduct({ ...product, images: [e.target.value] })}
-      />
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white border-b border-gray-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => router.push(`/products/${id}`)}
+            className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            ← Back to Product
+          </button>
+          <span className="text-gray-300">|</span>
+          <span className="text-xl font-bold tracking-tight text-gray-900">
+            The<span className="text-indigo-600">Store</span>
+          </span>
+        </div>
+      </header>
 
-      <button type="submit" className="mt-2 border">
-        Save
-      </button>
-    </form>
+      <main className="max-w-2xl mx-auto px-6 py-10">
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">Edit Product</h1>
+        <p className="text-sm text-gray-500 mb-8">Update the details below and save your changes.</p>
+
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+          <form onSubmit={handleUpdate} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+              <input
+                type="text"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                value={product.title}
+                onChange={(e) => setProduct({ ...product, title: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
+              <input
+                type="number"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                value={product.price}
+                onChange={(e) => setProduct({ ...product, price: Number(e.target.value) })}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <input
+                type="text"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                value={product.description}
+                onChange={(e) => setProduct({ ...product, description: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category ID</label>
+              <input
+                type="number"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                value={product.categoryId}
+                onChange={(e) => setProduct({ ...product, categoryId: Number(e.target.value) })}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+              <input
+                type="text"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                value={product.images[0]}
+                onChange={(e) => setProduct({ ...product, images: [e.target.value] })}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg text-sm transition-colors"
+            >
+              Save Changes
+            </button>
+          </form>
+        </div>
+      </main>
+    </div>
   );
 }

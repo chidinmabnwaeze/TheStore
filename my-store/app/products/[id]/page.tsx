@@ -89,34 +89,71 @@ export default function SingleProductPage() {
     }
   };
 
-  if (loading) return <p className="h-screen m-auto">Loading...</p>;
-  if (!product) return <p>Product not found</p>;
+  if (loading) return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <p className="text-gray-400 text-sm">Loading product...</p>
+    </div>
+  );
+  if (!product) return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <p className="text-gray-500">Product not found.</p>
+    </div>
+  );
 
   return (
-    <main className="flex justify-between items-center p-10">
-      <section>
-        <img src={product.images[0]} alt={product.title} className="" />
-        <button className="text-blue-500 mt-4" onClick={()=>router.push(`/products/${product.id}/edit/`)}>
-          Edit Product
-        </button>
-      </section>
-
-      <section className="ml-15">
-        <h1 className="text-2xl font-bold">{product.title}</h1>
-        <p className="text-lg">${product.price}</p>
-        <p>{product.description}</p>
-        <div className="flex justify-between mt-5">
-          <button className="bg-blue-700 p-4 w-full text-white rounded mr-3">
-            Buy Now
-          </button>
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white border-b border-gray-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-4">
           <button
-            className="bg-red-700 p-4 w-full text-white rounded mr-3"
-            onClick={handleDelete}
+            onClick={() => router.push("/products")}
+            className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
           >
-            Delete Product
+            ← Back to Products
           </button>
+          <span className="text-gray-300">|</span>
+          <span className="text-xl font-bold tracking-tight text-gray-900">
+            The<span className="text-indigo-600">Store</span>
+          </span>
         </div>
-      </section>
-    </main>
+      </header>
+
+      <main className="max-w-5xl mx-auto px-6 py-10">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+          <div className="md:w-1/2 bg-gray-100">
+            <img
+              src={product.images[0]}
+              alt={product.title}
+              className="w-full h-full object-cover max-h-96 md:max-h-full"
+            />
+          </div>
+
+          <div className="md:w-1/2 p-8 flex flex-col justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">{product.title}</h1>
+              <p className="text-3xl font-bold text-indigo-600 mb-4">${product.price}</p>
+              <p className="text-sm text-gray-500 leading-relaxed">{product.description}</p>
+            </div>
+
+            <div className="mt-8 space-y-3">
+              <button className="w-full py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+                Buy Now
+              </button>
+              <button
+                onClick={() => router.push(`/products/${product.id}/edit/`)}
+                className="w-full py-3 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition-colors"
+              >
+                Edit Product
+              </button>
+              <button
+                onClick={handleDelete}
+                className="w-full py-3 text-sm font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
+              >
+                Delete Product
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
   );
 }
