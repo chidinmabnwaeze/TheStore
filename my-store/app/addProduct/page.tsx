@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface addProductProps {
   title: string;
@@ -18,6 +20,8 @@ export default function AddProductPage() {
     images: [""],
   });
 
+  const router = useRouter();
+
   const handleAddProduct = async () => {
     try {
       const response = await fetch("https://api.escuelajs.co/api/v1/products", {
@@ -34,15 +38,21 @@ export default function AddProductPage() {
         }),
       });
 
+      
       if (!response.ok) {
+        const error = await response.json();
+        toast.error("Error adding product");
+        console.log(error);
         throw new Error("Failed to add product");
       }
-
+        
+      
       const data = await response.json();
+      toast.success("Product added successfully");
+      router.push("/products");
       console.log("Product added successfully", data);
     } catch (error) {
       console.error("Error adding product", error);
-      alert("Error adding product");
     }
   };
 

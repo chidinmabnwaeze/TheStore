@@ -25,11 +25,13 @@ export default function Home() {
 
       <main className="flex-1 flex flex-col items-center justify-center px-8 text-center">
         <h1 className="text-5xl font-bold text-gray-900 mb-4 leading-tight">
-          Shop smarter,<br />
+          Shop smarter,
+          <br />
           <span className="text-indigo-600">live better.</span>
         </h1>
         <p className="text-lg text-gray-500 mb-10 max-w-md">
-          Discover thousands of products at unbeatable prices. Sign in to start shopping today.
+          Discover thousands of products at unbeatable prices. Sign in to start
+          shopping today.
         </p>
         <div className="flex gap-4">
           <Link

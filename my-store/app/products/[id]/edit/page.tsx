@@ -139,9 +139,13 @@ export default function EditProductPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(product),
     });
+  
 
     if (res.ok) {
       router.push(`/products/${id}`);
+    } else {
+      const error = res.json();
+      console.log(error);
     }
   };
 
@@ -150,9 +154,9 @@ export default function EditProductPage() {
 
   return (
     <form onSubmit={handleUpdate} className="p-10">
-       <label className="block mb-1 font-semibold">Title</label>
+      <label className="block mb-1 font-semibold">Title</label>
       <input
-       type="text"
+        type="text"
         className="w-full border px-3 py-2 rounded"
         value={product.title}
         onChange={(e) => setProduct({ ...product, title: e.target.value })}
@@ -166,35 +170,35 @@ export default function EditProductPage() {
           setProduct({ ...product, price: Number(e.target.value) })
         }
       />
-         <label className="block mb-1 font-semibold">Description</label>
+      <label className="block mb-1 font-semibold">Description</label>
       <input
         type="text"
         className="w-full border px-3 py-2 rounded"
         value={product.description}
         onChange={(e) =>
-          setProduct({ ...product, description: (e.target.value) })
+          setProduct({ ...product, description: e.target.value })
         }
       />
-           <label className="block mb-1 font-semibold">Category ID</label>
+      <label className="block mb-1 font-semibold">Category ID</label>
       <input
         type="number"
         className="w-full border px-3 py-2 rounded"
         value={product.categoryId}
         onChange={(e) =>
-          setProduct({ ...product, categoryId: Number (e.target.value) })
+          setProduct({ ...product, categoryId: Number(e.target.value) })
         }
       />
-           <label className="block mb-1 font-semibold">Images</label>
+      <label className="block mb-1 font-semibold">Images</label>
       <input
         type="text"
         className="w-full border px-3 py-2 rounded"
         value={product.images[0]}
-        onChange={(e) =>
-          setProduct({ ...product, images: [e.target.value] })
-        }
+        onChange={(e) => setProduct({ ...product, images: [e.target.value] })}
       />
 
-      <button type="submit" className="mt-2 border">Save</button>
+      <button type="submit" className="mt-2 border">
+        Save
+      </button>
     </form>
   );
 }
