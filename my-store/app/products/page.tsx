@@ -27,7 +27,15 @@ export default function ProductsPage() {
   }, []);
 
   useEffect(() => {
-    getCategories().then((categories) => setCategories(categories));
+    const fetchCategories = async () => {
+      try {
+        const categories = await getCategories();
+        setCategories(categories);
+      } catch (error) {
+        console.error("Error fetching categories", error);
+      }
+    };
+    fetchCategories();
   }, []);
 
   return (
