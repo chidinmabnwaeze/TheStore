@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { Cart } from "@/app/cart/cart_logic";
 import EditProduct from "@/app/products/[id]/edit/page";
 
 interface ProductProps {
@@ -19,6 +20,7 @@ export default function SingleProductPage() {
   const router = useRouter();
   const [product, setProduct] = useState<ProductProps | null>(null);
   const [loading, setLoading] = useState(true);
+  const [cart, setCart] = useState<Cart | null>(null);
 
   const fetchProduct = async () => {
     try {
@@ -55,7 +57,7 @@ export default function SingleProductPage() {
           body: JSON.stringify({
             title: product?.title + "Updated",
           }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -75,7 +77,7 @@ export default function SingleProductPage() {
         `https://api.escuelajs.co/api/v1/products/${product?.id}`,
         {
           method: "DELETE",
-        }
+        },
       );
       if (!res.ok) {
         console.log("error deleting product");
@@ -89,16 +91,26 @@ export default function SingleProductPage() {
     }
   };
 
-  if (loading) return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <p className="text-gray-400 text-sm">Loading product...</p>
-    </div>
-  );
-  if (!product) return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <p className="text-gray-500">Product not found.</p>
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-400 text-sm">Loading product...</p>
+      </div>
+    );
+  if (!product)
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-500">Product not found.</p>
+      </div>
+    );
+
+  const addToCart = () => {
+    const newCart = new Cart();
+    newCart.items = [...(cart?.items ?? []), { productId: product.id, quantity: 1 }];
+    newCart.addProduct(product.id, 1);
+    console.log("Cart after adding product:", newCart);
+    setCart(newCart);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -129,13 +141,22 @@ export default function SingleProductPage() {
 
           <div className="md:w-1/2 p-8 flex flex-col justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">{product.title}</h1>
-              <p className="text-3xl font-bold text-indigo-600 mb-4">${product.price}</p>
-              <p className="text-sm text-gray-500 leading-relaxed">{product.description}</p>
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                {product.title}
+              </h1>
+              <p className="text-3xl font-bold text-indigo-600 mb-4">
+                ${product.price}
+              </p>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                {product.description}
+              </p>
             </div>
 
             <div className="mt-8 space-y-3">
-              <button className="w-full py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+              <button
+                className="w-full py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors"
+                onClick={addToCart}
+              >
                 Buy Now
               </button>
               <button

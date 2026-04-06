@@ -103,7 +103,7 @@ export default function ProductsPage() {
               <li key={cat.id}>
                 <a
                   href="#"
-                  className="capitalize font-bold hover:text-gray-900 transition-colors"
+                  className="capitalize font-medium hover:text-gray-900 transition-colors"
                 >
                   {cat.name}
                 </a>
