@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useUser } from "@/app/context/UserContext";
+import Header from "@/components/Header";
 import { Category, getCategories } from "../services/categories";
 
 interface ProductProps {
@@ -40,28 +41,7 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <span className="text-xl font-bold tracking-tight text-gray-900">
-            The<span className="text-indigo-600">Store</span>
-          </span>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">
-              Welcome,{" "}
-              <span className="font-medium text-gray-800">
-                {user?.name || "Guest"}
-              </span>
-            </span>
-            <Link
-              href="/addProduct"
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors"
-            >
-              + Add Product
-            </Link>
-          </div>
-        </div>
-      </header>
-
+      <Header />
       <main className="flex">
         <section className="max-w-7xl mx-auto px-6 py-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">

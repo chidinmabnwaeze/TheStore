@@ -1,14 +1,14 @@
 export class Cart {
-  constructor(public items: { productId: number; quantity: number }[] = []) {
+  constructor(public items: { productId: number; name: string; price: number; quantity: number }[] = []) {
     this.items = items;
   }
 
-  addProduct(productId: number, quantity: number){
+  addProduct(productId: number, name: string, price: number, quantity: number){
     const existingItem = this.items.find(item => item.productId ===productId);
     if(existingItem){
         existingItem.quantity += quantity;
     } else{
-        this.items.push({ productId, quantity });
+        this.items.push({ productId, name, price, quantity });
     }
   }
 

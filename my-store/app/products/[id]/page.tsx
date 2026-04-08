@@ -106,8 +106,8 @@ export default function SingleProductPage() {
 
   const addToCart = () => {
     const newCart = new Cart();
-    newCart.items = [...(cart?.items ?? []), { productId: product.id, quantity: 1 }];
-    newCart.addProduct(product.id, 1);
+    newCart.items = [...(cart?.items ?? []), { productId: product.id, name: product.title, price: product.price, quantity: 1 }];
+    newCart.addProduct(product.id, product.title, product.price, 1);
     console.log("Cart after adding product:", newCart);
     setCart(newCart);
   };
