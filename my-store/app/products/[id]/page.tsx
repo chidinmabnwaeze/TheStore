@@ -23,6 +23,7 @@ export default function SingleProductPage() {
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState<Cart | null>(null);
   const { addToCart } = useCart();
+  const [productAdded, setProductAdded] = useState(false);
 
   const fetchProduct = async () => {
     try {
@@ -149,11 +150,12 @@ export default function SingleProductPage() {
             <div className="mt-8 space-y-3">
               <button
                 className="w-full py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors"
-                onClick={() =>
-                  addToCart(product.id, product.title, product.price, 1)
-                }
+                onClick={() => {
+                  addToCart(product.id, product.title, product.price, 1);
+                  setProductAdded(true);
+                }}
               >
-                Buy Now
+                {productAdded ? "Product Added to Cart!" : "Buy Now"}
               </button>
               <button
                 onClick={() => router.push(`/products/${product.id}/edit/`)}

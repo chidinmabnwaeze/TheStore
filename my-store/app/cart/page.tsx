@@ -1,7 +1,5 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import { Cart } from "./cart_logic";
+import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
 
 interface CartItem {
@@ -13,11 +11,18 @@ interface CartItem {
 
 export default function CartPage() {
   const { addToCart, cart, removeFromCart } = useCart();
-
+  const router = useRouter();
   return (
     <div>
       {cart.items.length > 0 ? (
         <div className="h-screen flex flex-col justify-center items-center bg-zinc-50 font-sans dark:bg-black">
+          <button
+            onClick={() => router.push("/products")}
+            className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            ← Back to Products
+          </button>
+
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Your Cart ({cart.items.length})
           </h1>
