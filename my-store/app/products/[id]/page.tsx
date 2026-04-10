@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Cart } from "@/app/cart/cart_logic";
+import { useCart } from "@/app/context/CartContext";
 import EditProduct from "@/app/products/[id]/edit/page";
 
 interface ProductProps {
@@ -21,6 +22,7 @@ export default function SingleProductPage() {
   const [product, setProduct] = useState<ProductProps | null>(null);
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState<Cart | null>(null);
+  const { addToCart } = useCart();
 
   const fetchProduct = async () => {
     try {
@@ -104,14 +106,6 @@ export default function SingleProductPage() {
       </div>
     );
 
-  const addToCart = () => {
-    const newCart = new Cart();
-    newCart.items = [...(cart?.items ?? []), { productId: product.id, name: product.title, price: product.price, quantity: 1 }];
-    newCart.addProduct(product.id, product.title, product.price, 1);
-    console.log("Cart after adding product:", newCart);
-    setCart(newCart);
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-100 shadow-sm">
@@ -155,7 +149,9 @@ export default function SingleProductPage() {
             <div className="mt-8 space-y-3">
               <button
                 className="w-full py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors"
-                onClick={addToCart}
+                onClick={() =>
+                  addToCart(product.id, product.title, product.price, 1)
+                }
               >
                 Buy Now
               </button>

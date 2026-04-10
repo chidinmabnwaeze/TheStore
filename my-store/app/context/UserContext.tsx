@@ -8,7 +8,8 @@ import {
 } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { useActionData } from "react-router-dom";
+import { Cart } from "../cart/cart_logic";
+import ProductsPage from "../products/page";
 
 interface User {
   id: number;
@@ -26,6 +27,7 @@ const UserContext = createContext<AuthContextType | null>(null);
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [cart, setCart] = useState<Cart>(new Cart());
   const router = useRouter();
 
   const login = async (email: string, password: string) => {
